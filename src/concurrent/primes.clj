@@ -38,4 +38,18 @@
   "Creates infinite sequence of primes using incremental functional sieve."
   []
   (cons 2 (inc-sieve (iterate #(+ 2 %) 3) {})))
-
+
+
+(defn nth-prime
+  "Finds the nth prime without using sequences"
+  [n]
+  (if (= n 1)
+    2
+    (loop [table {}
+           i 3
+           cnt 2]
+      (if (contains? table i)
+        (recur (update-composites table i) (+ i 2) cnt)
+        (if (= n cnt)
+          i
+          (recur (assoc table (* i i) (list i)) (+ i 2) (inc cnt)))))))
